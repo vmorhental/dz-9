@@ -1,35 +1,37 @@
-public class Person {
+public abstract class Person {
     private String firstName;
     private String lastName;
-    private static int age;
+    private int age;
 
-    private static boolean partner;
+    private boolean hasPartner;
 
     private String partnerSurname;
     private String gender;
 
-    Person(String firstName, String lastName, int age, String partner, String gender) {
+    Person(String firstName, String lastName, int age, String hasPartner, String gender) {
         this.firstName = firstName;
         this.lastName = lastName;
-        Person.age = age;
-        this.partner= partner!=null? true:false;
-        this.partnerSurname = partner!=null? partner:"No partner";
+        this.age = age;
+        setHasPartner(hasPartner);
         this.gender=gender;
     }
 
-    public boolean isRetired(){
-        if (Person.getAge()>65){
-            return true;
-        }
-    return false;
-    }
+    public abstract boolean isRetired();
 
-    public void registerPartnership (String womanSurname, String manSurname){
-        if (womanSurname != manSurname){
-            setLastName(manSurname);
-            System.out.println("Прізвище стало " + getLastName());
+    public void registerPartnership (Woman person1, Man person2){
+        if (person1.getHasPartner()== person2.getHasPartner()) {
+            if (person1.getLastName() != person2.getLastName()) {
+                person1.setLastName(person2.getLastName());
+                person1.setPartnerSurname(person2.getLastName());
+                person2.setPartnerSurname(person1.getGirlSurname());
+                System.out.println("Прізвище стало " + getLastName());
+            }
+        }
+        else {
+            System.out.println("Один з вас вже у шлюбі!");
         }
     }
+    public abstract void deregisterPartnership (boolean divorsed);
 
     public String getFirstName() {
         return firstName;
@@ -47,7 +49,7 @@ public class Person {
         this.lastName = lastName;
     }
 
-    public static int getAge() {
+    public int getAge() {
         return age;
     }
 
@@ -55,8 +57,8 @@ public class Person {
         this.age = age;
     }
 
-    public static boolean getPartner() {
-        return partner;
+    public boolean getHasPartner() {
+        return hasPartner;
     }
     public String getGender() {
         return gender;
@@ -72,7 +74,13 @@ public class Person {
     public void setPartnerSurname(String partnerSurname) {
         this.partnerSurname = partnerSurname;
     }
-    public static void setPartner(boolean partner) {
-        Person.partner = partner;
+    public void setHasPartner(String person) {
+       if (person != null){
+           this.hasPartner=true;
+       }
+    }
+
+    public void  setHasPartnerDivorsed(boolean isDivorsed) {
+        this.hasPartner=isDivorsed;
     }
 }
